@@ -1,0 +1,30 @@
+.exercise-page {
+    width: 80vw;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding-bottom: 50px;
+}
+
+.exercise-answer-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.exercise-display-box {
+    width: 90%;
+}
+
+
+.answer-area-box {
+    width: 100%;
+}
+
+.display-text {
+    
+}
+
+.display-code {
+    background-color: rgb(241, 244, 243);
+}

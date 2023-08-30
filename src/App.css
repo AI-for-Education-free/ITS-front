@@ -1,6 +1,11 @@
-.App {
-  text-align: center;
+/* main {
+  margin-top: 40px;
 }
+
+a {
+  text-decoration: none;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +40,8 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+main {
+  padding-top: 40px;
 }

@@ -1,0 +1,10 @@
+.message-box {
+    margin: 0 auto;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 470px;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: bolder;
+}

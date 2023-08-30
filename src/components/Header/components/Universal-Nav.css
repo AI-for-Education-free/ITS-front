@@ -1,0 +1,246 @@
+.universal-nav {
+  z-index: 300;
+  width: 100%;
+  height: 40px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-items: center;
+  position: fixed;
+  color: white;
+  background-color: #1b1b32;
+}
+
+.universal-nav a {
+  text-decoration: none;
+}
+
+/* logo */
+.universal-nav-middle {
+  display: flex;
+  align-items: center;
+  flex: 1 0 33%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  -ms-overflow-scrolling: touch;
+}
+
+/* 菜单 */
+.universal-nav-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1 0 33%;
+  height: var(--header-height);
+}
+
+/* 菜单按钮 */
+.toggle-button-nav {
+  padding: 2px 14px;
+  border: 1px solid white;
+  font-size: 18px;
+  color: var(--gray-00);
+  background-color: var(--theme-color);
+  cursor: pointer;
+  max-height: calc(var(--header-height) - 6px);
+  margin-right: 10px;
+}
+
+.toggle-button-nav:hover {
+  background-color: var(--theme-color);
+  color: var(--gray-00);
+  /* border: 1px solid var(--gray-00); */
+}
+
+.toggle-button-nav:focus {
+  outline: 5px auto -webkit-focus-ring-color !important;
+  outline-offset: -3px;
+}
+
+
+/* 隐藏下拉菜单 */
+.nav-list {
+  display: none;
+  position: absolute;
+  top: 40px;
+  /* top: calc(var(--header-height) * 2); */
+  right: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 100vw;
+  height: auto;
+  margin: 0 0 0 -12px;
+  padding: 0;
+  list-style: none;
+  max-width: 250px;
+  background-color: #1b1b32;
+}
+
+/* 下拉菜单的链接 */
+.nav-link {
+  margin: 0;
+  padding: 2px 15px 0;
+  display: flex;
+  align-items: center;
+  color: var(--gray-00);
+  background-color: var(--gray-90);
+  opacity: 1;
+  white-space: normal;
+  min-height: var(--header-height);
+  width: 100%;
+  align-items: center;
+  border: none;
+}
+
+.nav-link:hover,
+.nav-link:active {
+  color: black;
+  text-decoration: none;
+  background: white;
+  cursor: pointer;
+}
+
+
+
+/* .expand-nav {
+  height: var(--header-height);
+} */
+
+.display-menu {
+  display: inherit;
+  text-align: left;
+  margin-top: calc(-1 * var(--header-height));
+  max-height: calc(100vh - var(--header-height));
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 下拉菜单分割线 */
+.nav-line,
+.nav-line-2 {
+  border-color: var(--gray-45);
+  width: 100%;
+  margin: 0;
+}
+
+.nav-line-2 {
+  border-top-width: 2px;
+}
+
+@media (max-width: 980px) {
+  .universal-nav-left {
+    display: none;
+  }
+
+  .universal-nav-middle {
+    flex: none;
+  }
+
+  .display-search {
+    display: initial;
+  }
+
+  .universal-nav-right {
+    flex: 1 0 50%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .fcc_searchBar .ais-SearchBox-form {
+    display: flex;
+    position: absolute;
+    top: var(--header-height);
+    left: 15px;
+    max-width: calc(100vw - 350px);
+  }
+
+  #universal-nav-logo {
+    display: flex;
+    position: absolute;
+    left: 17px;
+    top: 0;
+  }
+
+  .expand-nav {
+    min-height: calc(2 * var(--header-height));
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-list {
+    min-width: 100%;
+    top: calc(var(--header-height) * 2);
+    margin-top: 0;
+  }
+
+  .fcc_searchBar .ais-SearchBox-form {
+    max-width: 100%;
+  }
+
+  .ais-SearchBox-input {
+    min-width: 100%;
+  }
+
+  .ais-Hits {
+    min-width: calc(100% - 30px);
+  }
+
+  .display-menu {
+    max-height: calc(100vh - var(--header-height) * 2);
+  }
+}
+
+@media (max-width: 455px) {
+  .universal-nav {
+    padding: 0 5px;
+  }
+
+  .universal-nav {
+    padding: 0 5px;
+  }
+
+  .nav-link-sign-in {
+    display: flex;
+  }
+
+  .navatar .signup-btn {
+    display: none;
+  }
+
+  .navatar {
+    display: none;
+  }
+
+  #universal-nav-logo {
+    max-width: 60%;
+  }
+}
+
+@media (max-width: 300px) {
+  #universal-nav-logo {
+    max-width: none;
+    left: -170px;
+  }
+}
+
+
+
+a.signin {
+  width: 106px;
+  height: 32px;
+  background-color: #feac32;
+  margin-right: 20px;
+  text-align: center;
+  line-height: 32px;
+  color: black;
+}
+
+a.signin:hover {
+  cursor: pointer;
+  background-color: #fecc4c;
+}

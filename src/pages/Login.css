@@ -1,0 +1,81 @@
+.login-container {
+    margin-top: 100px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+    width: 470px;
+    /* height: 120px; */
+    margin: 0 auto;
+}
+
+.login-form>input, .login-form>.button{
+    height: 40px;
+    border: 1px black solid;
+    font-size: 22px;
+    padding-left: 16px;
+    margin: 10px 0;
+}
+
+.login-form>input:focus {
+    outline: none;
+}
+
+.login-form>.button {
+    padding: 0;
+    line-height: 40px;
+    text-align: center;
+    border: 3px black solid;
+    background-color: #d0d0d5;
+    color: black;
+}
+
+.login-form>.button:hover {
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+.separator {
+    margin: 5px auto;
+    text-align: center;
+    border-bottom: 3px solid #3b3b4f;
+    line-height: 0.1em;
+    width: 60%;
+}
+
+.separator>span {
+    background: #fff;
+    color: var(--gray-75);
+    padding: 0 10px;
+}
+
+.prompt-position {
+    position: relative;
+}
+
+.prompt-list {
+    position: absolute;
+    top: 53px;
+    width: 468px;
+    border: 1px black solid;
+    border-top: 0px;
+    background-color: white;
+}
+
+.prompt-item {
+    font-size: 22px;
+    padding-left: 16px;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    color: black;
+}
+
+.prompt-item:hover {
+    cursor: pointer;
+    background-color: #d0d0d5;
+
+}
