@@ -28,3 +28,12 @@
 .display-code {
     background-color: rgb(241, 244, 243);
 }
+
+.fillInBody {
+    width: 100%;
+}
+
+.fillInOneEmpty {
+    margin-left: 35px;
+    margin-top: 5px;
+}

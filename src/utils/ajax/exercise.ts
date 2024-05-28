@@ -1,6 +1,18 @@
 import axiosInstance from './index';
 
-export const requierExerciseTypes = (token:string) => {
+export const requireSubjects = (token:string) => {
+  return axiosInstance({
+    headers: {
+      "Content-Type": "application/json",
+      "token": token
+    },
+    method: "get",
+    url: "/exercises/subject",
+    responseType: "json",
+  });
+};
+
+export const requireExerciseTypes = (token:string) => {
   return axiosInstance({
     headers: {
       "Content-Type": "application/json",
@@ -12,27 +24,26 @@ export const requierExerciseTypes = (token:string) => {
   });
 };
 
-export const requireJavaExerciseBasicInfoAll = (token:string) => {
+export const requireExerciseBasicInfoAll = (token:string, exerciseType:string) => {
   return axiosInstance({
     headers: {
       "Content-Type": "application/json",
       "token": token
     },
     method: "get",
-    url: "/exercises/java/basicInfo/all",
+    url: "/exercises/basicInfo/all/" + exerciseType,
     responseType: "json",
   });
 }
 
-
-export const requierJavaProgramExerciseAll = (token:string) => {
+export const requireJavaProgramExerciseAll = (token:string) => {
   return axiosInstance({
     headers: {
       "Content-Type": "application/json",
       "token": token
     },
     method: "get",
-    url: "/exercises/java/program/all",
+    url: "/exercises/javaProgram/all",
     responseType: "json",
   });
 };
@@ -44,31 +55,43 @@ export const requierJavaProgramExerciseOneById = (token:string, exerciseId:strin
       "token": token
     },
     method: "get",
-    url: "/exercises/java/program/one/" + exerciseId,
+    url: "/exercises/javaProgram/one/" + exerciseId,
     responseType: "json",
   });
 };
 
-export const requierJavaSingleChoiceExerciseAll = (token:string) => {
+export const requireSingleChoiceExerciseAll = (token:string) => {
   return axiosInstance({
     headers: {
       "Content-Type": "application/json",
       "token": token
     },
     method: "get",
-    url: "/exercises/java/singleChoice/all",
+    url: "/exercises/singleChoice/all",
     responseType: "json",
   });
 };
 
-export const requierJavaSingleChoiceExerciseOneById = (token:string, exerciseId:string) => {
+export const requireSingleChoiceExerciseOneById = (token:string, exerciseId:string) => {
   return axiosInstance({
     headers: {
       "Content-Type": "application/json",
       "token": token
     },
     method: "get",
-    url: "/exercises/java/SingleChoice/one/" + exerciseId,
+    url: "/exercises/singleChoice/one/" + exerciseId,
+    responseType: "json",
+  });
+};
+
+export const requireFillInExerciseOneById = (token:string, exerciseId:string) => {
+  return axiosInstance({
+    headers: {
+      "Content-Type": "application/json",
+      "token": token
+    },
+    method: "get",
+    url: "/exercises/fillIn/one/" + exerciseId,
     responseType: "json",
   });
 };

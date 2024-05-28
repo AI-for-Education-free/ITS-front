@@ -2,11 +2,8 @@ import React from 'react';
 import {
   BrowserRouter,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
-import { Button } from "semantic-ui-react";
-
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -15,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
 import "semantic-ui-css/semantic.min.css";
 
-import { Login, SignUp, JavaProgramExercise, Home } from './pages';
+import { Login, SignUp, Home, JavaProgramExercise, SingleChoiceExercise, FillInExercise} from './pages';
 
 import Header from "./components/Header";
 import Footer from './components/Footer';
@@ -38,7 +35,9 @@ const App = () => {
               <Route path="login" element={<Login />}></Route>
               <Route path="sign-up" element={<SignUp />}></Route>
               <Route path="home" element={<Home />}></Route>
-              <Route path="java/exercise/detail/:exerciseId" element={<JavaProgramExercise/>}></Route>
+              <Route path="javaProgramExercise/:exerciseId" element={<JavaProgramExercise/>}></Route>
+              <Route path="singleChoiceExercise/:exerciseId" element={<SingleChoiceExercise/>}></Route>
+              <Route path="fillInExercise/:exerciseId" element={<FillInExercise/>}></Route>
             </Route>
           </Routes>
           {/* <Link to="/student/dream/exercise/524223040" className='button'><Button color="green"  style={{"marginTop": "100px"}}>做题界面</Button></Link> */}

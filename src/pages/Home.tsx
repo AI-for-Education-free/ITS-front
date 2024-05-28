@@ -1,38 +1,49 @@
+// @ts-nocheck
+
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, BrowserRouter, Routes, Route } from "react-router-dom";
-import { List, Button, Divider, Header } from "semantic-ui-react";
+import { List, Button, Divider, Header, TabPane, Tab, AccordionTitle, AccordionContent, Accordion, Icon, } from "semantic-ui-react";
 
-import { requierExerciseTypes, requireJavaExerciseBasicInfoAll } from '../utils/ajax/exercise';
+import { 
+  requireSubjects, 
+  requireExerciseTypes, 
+  requireExerciseBasicInfoAll
+} from '../utils/ajax/exercise';
 import JavaProgramExercise, { JavaProgramExerciseProps } from "./JavaProgramExercise";
 
 import "./Home.css";
 
 interface exerciseBasicInfoObject {
+  subjectType: string,
   exerciseType: string,
   exerciseId: string,
-  exerciseString: {
-    english: string,
-    chinese?: string
-  },
+  exerciseContent: string,
   tags: string[],
   concepts: string[]
 }
 
 const Home = (): JSX.Element => {
-  const tyepDict = {
-    "SINGLE_CHOICE_EXERCISE": {
-      "english": "single choice exercise",
-      "chinese": "单选题"
-    },
-    "JAVA_PROGRAM_EXERCISE": {
-      "english": "program exercise",
-      "chinese": "编程题"
-    },
-    "wait_require": {
-      "chinese": "请求中······",
-      "english": "waiting ..."
-    }
+  const subjectDict = {
+    "JAVA": "Java编程",
+    "MATH": "数学",
+    "wait_require": "请求中，请稍候..."
+  }
+  const exerciseTyepDict = {
+    "SINGLE_CHOICE_EXERCISE": "单选题",
+    "JAVA_PROGRAM_EXERCISE": "编程题",
+    "FILL_IN_EXERCISE": "填空题",
+    "wait_require": "请求中，请稍候..."
   };
+  const exerciseTypeTrans = {
+    "SINGLE_CHOICE_EXERCISE": "singleChoice",
+    "JAVA_PROGRAM_EXERCISE": "javaProgram",
+    "FILL_IN_EXERCISE": "fillIn",
+  }
+  const routeDict = {
+    "SINGLE_CHOICE_EXERCISE": "/singleChoiceExercise/",
+    "JAVA_PROGRAM_EXERCISE": "/javaProgramExercise/",
+    "FILL_IN_EXERCISE": "/fillInExercise/",
+  }
 
   const navigate = useNavigate();
   let token: string;
@@ -42,14 +53,26 @@ const Home = (): JSX.Element => {
     navigate("/login");
   }
 
+  const [allSubjects, setAllsubjects] = useState<string[]>(["wait_require"]);
   const [allExerciseTypes, setAllExerciseTypes] = useState<string[]>(["wait_require"]);
-  const [allExerciseBasicInfo, setAllExerciseBasicInfo] = useState<exerciseBasicInfoObject[]>([]);
+  const [allExercisesBasicInfo, setAllExercisesBasicInfo] = useState<exerciseBasicInfoObject[]>([]);
 
   useEffect(() => {
-    requierExerciseTypes(token).then(
+    requireSubjects(token).then(
       (res) => {
         if (res.data.flag) {
-          // console.log(res.data.data.typeList);
+          setAllsubjects(res.data.data.subjectList);
+        } else {
+          // console.log(res);
+        }
+      }
+    )
+  }, [])
+
+  useEffect(() => {
+    requireExerciseTypes(token).then(
+      (res) => {
+        if (res.data.flag) {
           setAllExerciseTypes(res.data.data.typeList);
         } else {
           // console.log(res);
@@ -59,114 +82,103 @@ const Home = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    requireJavaExerciseBasicInfoAll(token).then(
-      (res) => {
-        if (res.data.flag) {
-          // console.log(res.data.data.exerciseBasicInfoList);
-          setAllExerciseBasicInfo(res.data.data.exerciseBasicInfoList);
-        } else {
-          // console.log(res);
+    const fetchAllData = async () => {
+      const promises = allExerciseTypes.map((exerciseType) => {
+        if (exerciseType !== "wait_require") {
+          return requireExerciseBasicInfoAll(token, exerciseTypeTrans[exerciseType])
+            .then(res => res.data.flag ? res.data.data.exerciseBasicInfoList : []);
         }
+        return [];
+      });
+
+      try {
+        const results = await Promise.all(promises);
+        const mergedResults = [].concat(...results);
+        setAllExercisesBasicInfo(mergedResults);
+      } catch (error) {
+        console.error('Error fetching data', error);
       }
-    )
+    };
+
+    fetchAllData();
   }, [allExerciseTypes])
 
   return (
     <div className='home-page'>
-
-      {/* <Routes>
-        <Route path="/java/exercise/detail/">
-          {
-            allExerciseBasicInfo.map((exerciseBasicInfo) => {
-              let exerciseId = exerciseBasicInfo.exerciseId;
-              if (exerciseBasicInfo.exerciseType === "JAVA_PROGRAM_EXERCISE") {
-                return (
-                  <Route key={exerciseId} path={exerciseId} element={<JavaProgramExercise/>}></Route>
-                );
-              } else if (exerciseBasicInfo.exerciseType === "SINGLE_CHOICE_EXERCISE") {
-                return (
-                  <Route key={exerciseId} path={exerciseId} element={<JavaProgramExercise/>}></Route>
-                );
-              }
-            })
-          }
-        </Route>
-      </Routes> */}
       <div>
-        {
-          allExerciseTypes.map((type) => {
-            let headerString;
-            switch (type) {
-              case "SINGLE_CHOICE_EXERCISE":
-                headerString = tyepDict["SINGLE_CHOICE_EXERCISE"]["english"];
-                break;
-              case "JAVA_PROGRAM_EXERCISE":
-                headerString = tyepDict["JAVA_PROGRAM_EXERCISE"]["english"];
-                break;
-              default:
-                headerString = tyepDict["wait_require"]["english"];
-            }
-
-            return (
-              <div key={type} className="exercise-list">
-                <Header
-                  as="h1"
-                  block
-                  textAlign="center"
-                  style={{ color: "#4183c4" }}
-                >
-                  {headerString}
-                </Header>
-                <List divided relaxed>
-                  {allExerciseBasicInfo
-                    .filter((exerciseBasicInfo) => {
-                      return exerciseBasicInfo["exerciseType"] === type;
-                    })
-                    .map((exerciseBasicInfo) => {
+        <Tab panes={
+          allSubjects.map((subject) => {
+            const exercisesBasicInfoInThisSubject = allExercisesBasicInfo.filter((exerciseBasicInfo) => {
+              return exerciseBasicInfo["subjectType"] == subject;
+            });
+            return {
+              menuItem: subjectDict[subject],
+              render: () => (
+                <TabPane>
+                  {
+                    allExerciseTypes.map((exerciseType) => {
+                      let headerString = exerciseTyepDict[exerciseType];
+                      let route = routeDict[exerciseType];
                       return (
-                        <List.Item key={exerciseBasicInfo.exerciseId}>
-                          <List.Content>
-                            <Button
-                              as={Link}
-                              to={"/java/exercise/detail/" + exerciseBasicInfo.exerciseId}
-                              style={{ cursor: "pointer", marginRight: "10px" }}
-                              color="green"
-                            // onClick={() => {
-                            // }}
-                            >
-                              开始练习
-                            </Button>
-                            <List.Header
-                              as="h2"
-                              style={{
-                                color: "brown",
-                                display: "inline-block",
-                                verticalAlign: "middle",
-                              }}
-                            >
-                              {exerciseBasicInfo.tags.join("  |  ")}
-                            </List.Header>
+                        <div key={subject + exerciseType} className="exercise-list">
+                          <Header
+                            as="h1"
+                            block
+                            textAlign="center"
+                            style={{ color: "#4183c4" }}
+                          >
+                            {headerString}
+                          </Header>
+                          <List divided relaxed>
+                            {exercisesBasicInfoInThisSubject.map((exerciseBasicInfo) => {
+                              return (
+                                (exerciseBasicInfo["exerciseType"] == exerciseType) && <List.Item key={subject + exerciseType + exerciseBasicInfo.exerciseId}>
+                                  <List.Content>
+                                    <Button
+                                      as={Link}
+                                      to={route + exerciseBasicInfo.exerciseId}
+                                      style={{ cursor: "pointer", marginRight: "10px" }}
+                                      color="green"
+                                    // onClick={() => {
+                                    // }}
+                                    >
+                                      开始练习
+                                    </Button>
+                                    <List.Header
+                                      as="h2"
+                                      style={{
+                                        color: "brown",
+                                        display: "inline-block",
+                                        verticalAlign: "middle",
+                                      }}
+                                    >
+                                      {exerciseBasicInfo.tags.join("  |  ")}
+                                    </List.Header>
 
-                            <Divider />
-                            <List.Description>
-                              {/* <span style={{ color: "#db2828" }}>发布时间：</span>
-                              {new Date(test.releaseTime).toLocaleDateString() +
-                                " " +
-                                new Date(test.releaseTime).toLocaleTimeString()}
-                              <br />
-                              <span style={{ color: "#db2828" }}>描述：</span> */}
-                              {exerciseBasicInfo.exerciseString.english}
-                            </List.Description>
-                          </List.Content>
-                        </List.Item>
+                                    <Divider />
+                                    <List.Description>
+                                      {/* <span style={{ color: "#db2828" }}>发布时间：</span>
+                                      {new Date(test.releaseTime).toLocaleDateString() +
+                                        " " +
+                                        new Date(test.releaseTime).toLocaleTimeString()}
+                                      <br />
+                                      <span style={{ color: "#db2828" }}>描述：</span> */}
+                                      {exerciseBasicInfo.exerciseContent}
+                                    </List.Description>
+                                  </List.Content>
+                                </List.Item>
+                              );
+                            })}
+                          </List>
+                        </div>
                       );
-                    })}
-                </List>
-              </div>
-            );
+                    })
+                  }
+                </TabPane>
+              )
+            }
           })
-        }
-
+        } />
       </div>
 
     </div>
