@@ -24,6 +24,18 @@ export const requireExerciseTypes = (token:string) => {
   });
 };
 
+export const requireDefaultRecommendationExercise = (token:string) => {
+  return axiosInstance({
+    headers: {
+      "Content-Type": "application/json",
+      "token": token
+    },
+    method: "get",
+    url: "/recommend/default",
+    responseType: "json",
+  });
+}
+
 export const requireExerciseBasicInfoAll = (token:string, exerciseType:string) => {
   return axiosInstance({
     headers: {
@@ -109,3 +121,33 @@ export const submitJavaProgramExerciseAnswer = (token:string, exerciseId:string,
     responseType: "json",
   });
 };
+
+export const submitSingleChoiceExerciseAnswer = (token:string, exerciseId:string, answer:string) => {
+  return axiosInstance({
+    headers: {
+      "Content-Type": "application/json",
+      "token": token
+    },
+    method: "post",
+    url: "/exercises/singleChoice/check/" + exerciseId,
+    data: {
+      "submissionChoiceAnswer": answer
+    },
+    responseType: "json",
+  });
+}
+
+export const submitFillInExerciseAnswer = (token:string, exerciseId:string, answer:Record<string, string>) => {
+  return axiosInstance({
+    headers: {
+      "Content-Type": "application/json",
+      "token": token
+    },
+    method: "post",
+    url: "/exercises/fillIn/check/" + exerciseId,
+    data: {
+      "submissionFillInAnswer": answer
+    },
+    responseType: "json",
+  });
+}

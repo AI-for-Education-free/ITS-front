@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { Input } from 'semantic-ui-react';
+import { Input, Button, Segment, Message, Icon } from 'semantic-ui-react';
 
 
-import { requireFillInExerciseOneById } from '../utils/ajax/exercise';
+import { requireFillInExerciseOneById, submitFillInExerciseAnswer } from '../utils/ajax/exercise';
 
 import "./Exercise/Exercise.css";
 import { exerciseContentObject } from './JavaProgramExercise';
@@ -33,14 +33,15 @@ const FillInExercise = (): JSX.Element => {
     navigate("/login");
   }
 
-  const dispatch = useDispatch();
-  dispatch(setFooter(false));
+  // const dispatch = useDispatch();
+  // dispatch(setFooter(false));
 
   const { exerciseId } = useParams();
 
   const [exercise, setExercise] = useState<exerciseObject | null>(null);
   const [correctAnswerKeys, setCorrectAnswerKeys] = useState<fillInCorrectAnswer | null>(null);
   const [currentAnswer, setCurrentAnswer] = useState<fillInCorrectAnswer | null>(null);
+  const [checkResult, setCheckResult] = useState<int>(2);
 
   useEffect(() => {
     requireFillInExerciseOneById(token, exerciseId).then((res) => {
@@ -101,6 +102,43 @@ const FillInExercise = (): JSX.Element => {
               />
             })
           }
+        </div>
+
+        <div style={{
+          marginTop: "5px",
+          width: "450px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}>
+          <div>
+            <Button
+              icon
+              labelPosition="right"
+              color="green"
+              onClick={() => {
+                submitFillInExerciseAnswer(localStorage.getItem("token"), exerciseId, currentAnswer).then(
+                  (res) => {
+                    setCheckResult(res.data.data.checkResult);
+                  }
+                );
+              }}
+            >
+              <Icon name="arrow up" color="black" />
+              提交
+            </Button>
+          </div>
+
+          <Segment>
+            <Message.Header style={{ "textAlign": "center" }}>提交结果</Message.Header>
+            {(checkResult !== 2) ? <Message success={checkResult} negative={!checkResult}>
+              {checkResult ?
+                (<><span>正确</span><Icon name="check circle" color="green" size="large" /></>) :
+                <><span>错误</span><Icon name="times circle" color="red" size="large" /></>}
+            </Message> : <Message>
+              <><Icon name="wait" color="blue" size="large" /><span>等待提交</span></>
+            </Message>}
+          </Segment>
         </div>
 
       </div>) : (<div>waiting ...</div>)}
