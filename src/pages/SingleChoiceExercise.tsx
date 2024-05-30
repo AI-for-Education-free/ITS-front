@@ -145,7 +145,7 @@ const SingleChoiceExercise = (): JSX.Element => {
       </div>) : (<div>waiting ...</div>)}
       <Divider />
       <div>
-        <Form style={{
+        {/* <Form style={{
           marginTop: "20px",
         }}>
           <List relaxed>
@@ -200,7 +200,7 @@ const SingleChoiceExercise = (): JSX.Element => {
             <Icon name="arrow up" color="black" />
             询问大语言模型
           </Button>
-        </Form>
+        </Form> */}
       </div>
     </div>
   );
