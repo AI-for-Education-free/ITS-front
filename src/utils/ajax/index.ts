@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 实例化一个请求器，做一些基本配置
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.1.28:8080",
+  baseURL: "http://localhost:8080",
 });
 
 // 请求拦截
